@@ -1,0 +1,746 @@
+\section{Actividades}
+
+\subsection{Ejercicio 1}
+Escribir, comentar, compilar y comprobar el funcionamiento del siguiente programa.
+
+
+\subsubsection{Pseudo codigo}
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	
+	Definir ARREGLO[16]\;
+	CONTADOR $\leftarrow$ 0\;
+	
+	Mientras CONTADOR $<$ 16 hacer\;
+	\Indp
+	ARREGLO[CONTADOR] $\leftarrow$ CONTADOR\;
+	CONTADOR $\leftarrow$ CONTADOR + 1\;
+	\Indm
+	
+	Finalizar programa\;
+	
+	\caption{Llenado de arreglo con valores consecutivos}
+\end{algorithm}
+
+\subsubsection{Desarrollo}
+\begin{lstlisting}[language=ARM, style=armstyle]
+	.data
+	i:  .skip 64              @ reservar 64 bytes para arreglo i
+	
+	.text
+	.global main
+	
+	main:
+	ldr r1, =i            @ r1 <-- direccion base del arreglo i
+	mov r2, #0            @ r2 <-- 0 (contador)
+	
+	loop:
+	cmp r2, #16           @ comparar contador con 16
+	beq fin               @ si r2 == 16 terminar
+	
+	add r3, r1, r2, LSL #2 @ r3 = direccion i + (r2 * 4)
+	str r2, [r3]           @ guardar r2 en i[r2]
+	
+	add r2, r2, #1         @ r2 = r2 + 1
+	b loop                 @ repetir ciclo
+	
+	fin:
+	b fin                  @ ciclo infinito
+\end{lstlisting}
+
+\newpage
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.75\linewidth]{TerminalPhotos/1.png}
+	\caption{Debug Ejercicio 1 con \texttt{dbg}}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/2/1.png}
+	\end{minipage} \hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/2/2.png}
+	\end{minipage} \hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/2/3.png}
+	\end{minipage}\hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/2/4.png}
+	\end{minipage}
+	\caption{CPUlator Ejercicio 1}
+\end{figure}
+
+\subsubsection{Analisis de resultados}
+El programa reservo un bloque de memoria de 64 bytes, utilizando un ciclo iterativo para almacenar 16 enteros del 0 al 15. Se empleo direccionamiento indexado con desplazamiento a la izquierda (LSL \#2) para garantizar la correcta alineacion de los datos de 32 bits en memoria, finalizando la ejecucion de forma controlada mediante una condicion de parada..
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{Ejercicio 2}
+Modificar el programa de la actividad 1, para usar el direccionamiento indexado de su preferencia con el doble de datos. 
+
+\subsubsection{Pseudo codigo}
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	
+	Definir ARREGLO[32]\;
+	CONTADOR $\leftarrow$ 0\;
+	PUNTERO $\leftarrow$ direccion base de ARREGLO\;
+	
+	Mientras CONTADOR $<$ 32 hacer\;
+	\Indp
+	Guardar CONTADOR en la direccion apuntada por PUNTERO\;
+	PUNTERO $\leftarrow$ PUNTERO + 4\;
+	CONTADOR $\leftarrow$ CONTADOR + 1\;
+	\Indm
+	
+	Finalizar programa\;
+	
+	\caption{Llenado de arreglo usando direccionamiento indexado}
+\end{algorithm}
+
+\subsubsection{Desarrollo}
+\begin{lstlisting}[language=ARM, style=armstyle]
+	.data
+	i:  .skip 128          @ 32 enteros (32 x 4 bytes)
+	
+	.text
+	.global _start
+	_start:
+	
+	ldr r1, =i         @ r1 = direccion base del arreglo
+	mov r2, #0         @ r2 = contador (valor a guardar)
+	mov r4, #32        @ total de datos
+	
+	loop:
+	cmp r2, r4         @ r2 == 32?
+	beq fin
+	
+	str r2, [r1], #4   @ Guardar r2 y avanzar puntero 4 bytes
+	@ (direccionamiento indexado post-indexado)
+	
+	add r2, r2, #1     @ r2++
+	b loop
+	
+	fin:
+	mov r7, #1
+	svc 0
+\end{lstlisting}
+
+\newpage
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.75\linewidth]{TerminalPhotos/2.png}
+	\caption{Debug Ejercicio 2 con \texttt{dbg}}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/2/1.png}
+	\end{minipage} \hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/2/2.png}
+	\end{minipage} \hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/2/3.png}
+	\end{minipage}\hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/2/4.png}
+	\end{minipage}
+	\caption{CPUlator Ejercicio 2}
+\end{figure}
+
+\subsubsection{Analisis de Resultados}
+El programa inicializo un bloque de 128 bytes para almacenar 32 enteros del 0 al 31. Se utilizo direccionamiento post-indexado (str r2, [r1], \#4), que permitio guardar el dato y actualizar automaticamente el puntero de memoria en una sola instruccion. Esto optimizo el ciclo al eliminar el calculo manual de desplazamientos en cada iteracion, utilizado en el ejercicio anterior, logrando una mejor gestion de memoria y la terminacion del programa mediante llamadas al sistema.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{Ejercicio 3}
+Realizar un programa almacene en memoria un arreglo de datos de 32 bits con 16 elementos; una vez transferidos, realizar la copia en sentido inverso en otro arreglo.
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\linewidth]{pics/3.png}
+\end{figure}
+\subsubsection{Pseudo codigo}
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	
+	Definir ORIGEN[16]\;
+	Definir DESTINO[16]\;
+	
+	CONTADOR $\leftarrow$ 0\;
+	
+	Mientras CONTADOR $<$ 16 hacer\;
+	\Indp
+	ORIGEN[CONTADOR] $\leftarrow$ CONTADOR\;
+	CONTADOR $\leftarrow$ CONTADOR + 1\;
+	\Indm
+	
+	CONTADOR $\leftarrow$ 0\;
+	
+	Mientras CONTADOR $<$ 16 hacer\;
+	\Indp
+	DESTINO[CONTADOR] $\leftarrow$ ORIGEN[15 - CONTADOR]\;
+	CONTADOR $\leftarrow$ CONTADOR + 1\;
+	\Indm
+	
+	Finalizar programa\;
+	
+	\caption{Copia de arreglo en orden inverso}
+\end{algorithm}
+
+\subsubsection{Desarrollo}
+\begin{lstlisting}[language=ARM, style=armstyle]
+	.data
+	origen:   .skip 64          @ reservar 64 bytes (16 enteros de 32 bits)
+	destino:  .skip 64          @ reservar 64 bytes para el arreglo destino
+	
+	.text
+	.global _start
+	_start:
+	
+	ldr r0, =origen         @ r0 <-- direccion base de origen
+	ldr r1, =destino        @ r1 <-- direccion base de destino
+	mov r2, #0              @ r2 <-- contador
+	mov r3, #16             @ r3 <-- numero total de elementos
+	
+	llenar:
+	cmp r2, r3              @ comparar contador con 16
+	beq copiar              @ si r2 == 16 pasar a copiar
+	
+	str r2, [r0, r2, LSL #2] @ origen[r2] = r2
+	add r2, r2, #1           @ r2 = r2 + 1
+	b llenar                 @ repetir ciclo
+	
+	copiar:
+	mov r2, #0              @ reiniciar contador
+	
+	loop_inv:
+	cmp r2, r3              @ comparar contador con 16
+	beq fin                 @ si r2 == 16 terminar
+	
+	sub r4, r3, r2          @ r4 = 16 - r2
+	sub r4, r4, #1          @ r4 = indice inverso
+	ldr r5, [r0, r4, LSL #2] @ cargar origen[indice inverso]
+	str r5, [r1, r2, LSL #2] @ guardar en destino[r2]
+	
+	add r2, r2, #1          @ r2 = r2 + 1
+	b loop_inv              @ repetir ciclo
+	
+	fin:
+	mov r7, #1              @ syscall exit
+	svc 0
+\end{lstlisting}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.75\linewidth]{TerminalPhotos/3.png}
+	\caption{Ejercicio 3 Debugeado con \texttt{dbg}}
+\end{figure}
+
+\newpage
+\begin{figure}[ht!]
+	\centering
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/3/1.png}
+	\end{minipage} \hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/3/2.png}
+	\end{minipage} \hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/3/3.png}
+	\end{minipage}\hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/3/4.png}
+	\end{minipage}
+	\caption{CPUlator Ejercicio 3}
+\end{figure}
+
+\subsubsection{Analisis de Resultados}
+El programa realizo la transferencia de 16 enteros entre dos bloques de memoria, implementando una inversion de orden. Mediante el calculo de un indice inverso ($15 - n$) y direccionamiento indexado con desplazamiento, el algoritmo extrajo los datos del bloque de origen de forma descendente y los almaceno en el destino de forma ascendente. El resultado final confirmo la correcta manipulacion de punteros y la preservacion de la alineacion de 32 bits en operaciones de transferencia.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{Ejercicio 4}
+Realizar un programa que forme un arreglo de 20 elementos, con el siguiente criterio: 
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\linewidth]{pics/4.png}
+\end{figure}
+\subsubsection{Pseudo codigo}
+\begin{algorithm}[H]
+	\SetAlgoLined
+	
+	Definir ARREGLO[20]\;
+	VALOR $\leftarrow$ 0\;
+	INDICE $\leftarrow$ 0\;
+	
+	Mientras INDICE $<$ 20 hacer\;
+	\Indp
+	ARREGLO[INDICE] $\leftarrow$ VALOR\;
+	VALOR $\leftarrow$ VALOR + 2\;
+	INDICE $\leftarrow$ INDICE + 1\;
+	\Indm
+	
+	Finalizar programa\;
+	
+	\caption{Generacion de arreglo con numeros pares}
+\end{algorithm}
+
+\subsubsection{Desarrollo}
+\begin{lstlisting}[language=ARM, style=armstyle]
+	.data
+	arreglo: .skip 80        @ 20 elementos de 32 bits
+	
+	.text
+	.global _start
+	_start:
+	
+	ldr r0, =arreglo
+	mov r1, #0          @ contador
+	mov r2, #0          @ valor
+	mov r3, #20
+	
+	loop:
+	cmp r1, r3
+	beq fin
+	
+	str r2, [r0, r1, LSL #2]
+	add r2, r2, #2      @ genera numeros pares
+	add r1, r1, #1
+	b loop
+	
+	fin:
+	mov r7, #1
+	svc 0
+\end{lstlisting}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.5\linewidth]{TerminalPhotos/4.png}
+	\caption{Ejercicio 4 Debugeado con \texttt{dbg}}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/4/1.png}
+	\end{minipage} \hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/4/2.png}
+	\end{minipage} \hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/4/3.png}
+	\end{minipage}\hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/4/4.png}
+	\end{minipage}
+	\caption{CPUlator Ejercicio 4}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.5\linewidth]{cpulator/4/5.png}
+	\caption{Memoria CPUlator Ejercicio 4}
+\end{figure}
+\newpage 
+\subsubsection{Analisis de Resultados}
+El programa inicializo un bloque de 80 bytes con una sucesion aritmetica de 20 numeros pares del 0 al 38. Ademas, se utilizo una logica con dos punteros: uno para controlar la iteracion y otro para generar el numero par, empleando direccionamiento indexado con desplazamiento para garantizar la alineacion de cada dato de 32 bits en memoria. El proceso finalizo exitosamente tras completar el llenado del arreglo mediante una salida controlada por el sistema.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{Ejercicio 5}
+Realizar un programa que multiplique dos matrices de 2x2; los datos podran ser de 8 bits.
+\[
+\begin{bmatrix}
+	A & B \\
+	C & D
+\end{bmatrix}
+\begin{bmatrix}
+	E & F \\
+	G & H
+\end{bmatrix}
+=
+\begin{bmatrix}
+	I & J \\
+	K & L
+\end{bmatrix}
+\]
+
+\subsubsection{Pseudo codigo}
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	
+	Definir matrices A[2][2], B[2][2]\;
+	Definir matriz C[2][2]\;
+	
+	C[0][0] $\leftarrow$ A[0][0] * B[0][0] + A[0][1] * B[1][0]\;
+	C[0][1] $\leftarrow$ A[0][0] * B[0][1] + A[0][1] * B[1][1]\;
+	C[1][0] $\leftarrow$ A[1][0] * B[0][0] + A[1][1] * B[1][0]\;
+	C[1][1] $\leftarrow$ A[1][0] * B[0][1] + A[1][1] * B[1][1]\;
+	
+	Finalizar programa\;
+	
+	\caption{Multiplicacion de matrices 2x2}
+\end{algorithm}
+
+\subsubsection{Desarrollo}
+\begin{lstlisting}[language=ARM, style=armstyle]
+	.data
+	A: .byte 1,2,3,4
+	B: .byte 5,6,7,8
+	C: .space 4
+	
+	.text
+	.global _start
+	_start:
+	
+	ldr r0, =A
+	ldr r1, =B
+	ldr r2, =C
+	
+	ldrb r3, [r0]        @ A
+	ldrb r4, [r0, #1]    @ B
+	ldrb r5, [r0, #2]    @ C
+	ldrb r6, [r0, #3]    @ D
+	
+	ldrb r7, [r1]        @ E
+	ldrb r8, [r1, #1]    @ F
+	ldrb r9, [r1, #2]    @ G
+	ldrb r10,[r1, #3]    @ H
+	
+	mul r11, r3, r7
+	mul r12, r4, r9
+	add r11, r11, r12
+	strb r11, [r2]
+	
+	mul r11, r3, r8
+	mul r12, r4, r10
+	add r11, r11, r12
+	strb r11, [r2, #1]
+	
+	mul r11, r5, r7
+	mul r12, r6, r9
+	add r11, r11, r12
+	strb r11, [r2, #2]
+	
+	mul r11, r5, r8
+	mul r12, r6, r10
+	add r11, r11, r12
+	strb r11, [r2, #3]
+	
+	fin:
+	mov r7, #1
+	svc 0
+\end{lstlisting}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.5\linewidth]{TerminalPhotos/5.png}
+	\caption{Ejercicio 5 Debugeado con \texttt{dbg}}
+\end{figure}
+
+\newpage
+\begin{figure}[ht!]
+	\centering
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/5/1.png}
+	\end{minipage} \hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/5/2.png}
+	\end{minipage} \hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/5/3.png}
+	\end{minipage}\hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/5/4.png}
+	\end{minipage}
+	\caption{CPUlator Ejercicio 5}
+\end{figure}
+
+\subsubsection{Analisis de Resultados}
+El programa implemento exitosamente una multiplicacion de matrices de $2 \times 2$ utilizando aritmetica de 8 bits. Mediante el uso de instrucciones de carga y almacenamiento de bytes, con ldrb y strb, se ejecuto el producto punto entre las filas de la matriz A y las columnas de la matriz B. El resultado valido la correcta gestion de desplazamientos inmediatos en memoria y la capacidad del procesador para realizar operaciones combinadas de multiplicacion (mul) y suma (add) sobre registros independientes para obtener una matriz resultante C de 4 elementos.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{Ejercicio 6}
+Realizar un programa que encuentre el numero con valor mayor en un arreglo de 20 elementos que seran almacenados en memoria; para lo cual: 
+\begin{enumerate}
+	\item[a.] Indicar cual fue el valor mayor.
+	\item[b.] Ubicar la direccion donde se encontro este numero.
+	\item[c.] Usar las direcciones que se requieran para cumplir lo solicitado.
+\end{enumerate}
+\subsubsection{Pseudo codigo}
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	
+	Definir ARREGLO[20]\;
+	
+	MAYOR $\leftarrow$ ARREGLO[0]\;
+	DIRECCION $\leftarrow$ 0\;
+	INDICE $\leftarrow$ 1\;
+	
+	Mientras INDICE $<$ 20 hacer\;
+	\Indp
+	Si ARREGLO[INDICE] $>$ MAYOR entonces\;
+	\Indp
+	MAYOR $\leftarrow$ ARREGLO[INDICE]\;
+	DIRECCION $\leftarrow$ INDICE\;
+	\Indm
+	INDICE $\leftarrow$ INDICE + 1\;
+	\Indm
+	
+	Mostrar MAYOR\;
+	Mostrar DIRECCION\;
+	
+	Finalizar programa\;
+	
+	\caption{Busqueda del valor mayor en un arreglo}
+\end{algorithm}
+
+\subsubsection{Desarrollo}
+\begin{lstlisting}[language=ARM, style=armstyle]
+	.data
+	arreglo: .word 5,8,3,10,2,7,15,1,4,6,9,11,14,13,12,0,16,18,17,19
+	mayor:   .word 0
+	dir:     .word 0
+	
+	.text
+	.global _start
+	_start:
+	
+	ldr r0, =arreglo
+	ldr r1, [r0]        @ primer valor
+	mov r2, #1
+	mov r3, #20
+	mov r4, r0          @ direccion mayor
+	
+	loop:
+	cmp r2, r3
+	beq guardar
+	
+	ldr r5, [r0, r2, LSL #2]
+	cmp r5, r1
+	ble siguiente
+	
+	mov r1, r5
+	add r4, r0, r2, LSL #2
+	
+	siguiente:
+	add r2, r2, #1
+	b loop
+	
+	guardar:
+	ldr r6, =mayor
+	str r1, [r6]
+	
+	ldr r6, =dir
+	str r4, [r6]
+	
+	fin:
+	mov r7, #1
+	svc 0
+\end{lstlisting}
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.75\linewidth]{TerminalPhotos/6.png}
+	\caption{Ejercicio 6 Debugeado con \texttt{dbg}}
+\end{figure}
+
+\newpage
+\begin{figure}[ht!]
+	\centering
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/6/1.png}
+	\end{minipage} \hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/6/2.png}
+	\end{minipage} \hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/6/3.png}
+	\end{minipage}\hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/6/4.png}
+	\end{minipage}
+	\caption{CPUlator Ejercicio 6}
+\end{figure}
+
+\subsubsection{Analisis de Resultados}
+El programa implemento un algoritmo de busqueda del valor mayor en un arreglo de 20 elementos de 32 bits. Mediante comparaciones iterativas y saltos condicionales (ble), el codigo fue eligiendo entre los valores del arreglo, almacenando el numero mas alto y su direccion de memoria correspondiente en dos registros diferentes. Finalmente, el resultado valido la correcta implementacion de estructuras de control y el manejo de punteros dinamicos para la extraccion de informacion en tiempo de ejecucion.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\subsection{Ejercicio 7}
+Realizar un programa que ordene de manera ascendente un arreglo de 32 elementos de 32 bits; debera: 
+
+\begin{enumerate}
+	\item[a.] Mantener el arreglo original. 
+	\item[b.] Generar otro arreglo con el ordenamiento del original.
+\end{enumerate}
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=1\linewidth]{pics/7.png}
+\end{figure}
+\subsubsection{Pseudo codigo}
+
+\begin{algorithm}[H]
+	\SetAlgoLined
+	
+	Definir ORIGINAL[32]\;
+	Definir ORDENADO[32]\;
+	
+	INDICE $\leftarrow$ 0\;
+	
+	Mientras INDICE $<$ 32 hacer\;
+	\Indp
+	ORDENADO[INDICE] $\leftarrow$ ORIGINAL[INDICE]\;
+	INDICE $\leftarrow$ INDICE + 1\;
+	\Indm
+	
+	I $\leftarrow$ 0\;
+	
+	Mientras I $<$ 32 hacer\;
+	\Indp
+	J $\leftarrow$ 0\;
+	Mientras J $<$ 31 hacer\;
+	\Indp
+	Si ORDENADO[J] $>$ ORDENADO[J+1] entonces\;
+	\Indp
+	Intercambiar ORDENADO[J] y ORDENADO[J+1]\;
+	\Indm
+	J $\leftarrow$ J + 1\;
+	\Indm
+	I $\leftarrow$ I + 1\;
+	\Indm
+	
+	Finalizar programa\;
+	
+	\caption{Ordenamiento ascendente por metodo burbuja}
+\end{algorithm}
+
+\subsubsection{Desarrollo}
+\begin{lstlisting}[language=ARM, style=armstyle]
+	.data
+	original: .word 9,4,7,1,3,8,2,6,5,0,11,13,12,10,14,15,16,18,17,19,20,22,
+	21,23,24,25,26,27,28,29,30,31
+	ordenado: .skip 128      @ 32 * 4 bytes
+	.text
+	.global _start
+	_start:
+	
+	ldr r0, =original
+	ldr r1, =ordenado
+	mov r2, #0
+	mov r3, #32          @ tamano
+	
+	@ -------- COPIAR --------
+	copiar:
+	cmp r2, r3
+	beq ordenar
+	
+	ldr r4, [r0, r2, LSL #2]
+	str r4, [r1, r2, LSL #2]
+	add r2, r2, #1
+	b copiar
+	
+	@ -------- ORDENAR --------
+	ordenar:
+	mov r2, #0           @ i = 0
+	
+	outer:
+	cmp r2, r3
+	beq fin
+	
+	mov r4, #0           @ j = 0
+	sub r8, r3, #1       @ limite = n - 1
+	
+	inner:
+	cmp r4, r8           @ j < n-1
+	bge next
+	
+	ldr r5, [r1, r4, LSL #2]   @ A[j]
+	
+	add r9, r4, #1
+	ldr r6, [r1, r9, LSL #2]   @ A[j+1]
+	
+	cmp r5, r6
+	ble skip
+	
+	str r6, [r1, r4, LSL #2]
+	str r5, [r1, r9, LSL #2]
+	
+	skip:
+	add r4, r4, #1
+	b inner
+	
+	next:
+	add r2, r2, #1
+	b outer
+	
+	@ -------- FIN --------
+	fin:
+	mov r7, #1
+	svc 0
+\end{lstlisting}
+\newpage
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.75\linewidth]{TerminalPhotos/7.png}
+	\caption{Ejercicio 7 Debugeado con \texttt{dbg}}
+\end{figure}
+
+\begin{figure}[ht!]
+	\centering
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/7/1.png}
+	\end{minipage} \hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/7/2.png}
+	\end{minipage} \hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/7/3.png}
+	\end{minipage}\hfill
+	\begin{minipage}{0.24\linewidth}
+		\centering
+		\includegraphics[width=\linewidth]{cpulator/7/4.png}
+	\end{minipage}
+	\caption{CPUlator Ejercicio 7}
+\end{figure}
+
+\subsubsection{Analisis de Resultados}
+El programa implemento el algoritmo Bubble Sort para ordenar 32 enteros de 32 bits. La ejecucion valido el uso de ciclos anidados y saltos condicionales para realizar comparaciones adyacentes y el intercambio de valores en memoria conocido como swapping. Al finalizar, se verifico que el bloque de memoria ordenado contenia la secuencia numerica en orden ascendente, demostrando una gestion correcta de los punteros y un control adecuado del flujo del programa solicitado.
