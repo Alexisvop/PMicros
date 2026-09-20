@@ -1,0 +1,53 @@
+\documentclass[11pt, titlepage]{article}
+
+% General Purpose Packages
+\usepackage[utf8]{inputenc}
+\usepackage{academical}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage[backend=biber,style=ieee]{biblatex}
+\usepackage[ruled,vlined,spanish]{algorithm2e}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% Doc de Bibliografia
+\addbibresource{bibliografia.bib}
+
+\usepackage{listings}
+\lstset{
+    language=Python,
+    backgroundcolor=\color{gray!10},
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    showstringspaces=false,
+    tabsize=4,
+    breaklines=true,
+    frame=single
+}
+
+% Extra document format
+% Document Specific Packages
+% \spacing{1.25}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+    \input{Portada/portada.tex}
+    
+    \newpage
+    \tableofcontents
+    
+    \newpage
+    \input{secciones/Objetivo.tex}
+    \input{secciones/actividades.tex}
+    
+    \newpage
+    \input{secciones/Conclusion.tex}
+    
+    \printbibliography
+\end{document}

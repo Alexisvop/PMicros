@@ -1,0 +1,83 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{academical}[2024/08/04 Resources for academical documents]
+% General Structure 
+\RequirePackage[spanish]{babel}
+\RequirePackage[none]{hyphenat}
+\RequirePackage[margin=2.0cm]{geometry}
+\RequirePackage{parskip}
+\RequirePackage{setspace}
+\RequirePackage{fancyhdr}
+
+% --- Modificado para compatibilidad local con biblatex ---
+% En local, si se usa biblatex en el main, estas líneas generan conflicto (Emergency stop)
+% \bibliographystyle{apalike}  
+% \bibliography{references}  
+% ---------------------------------------------------------
+
+\usepackage{url}
+% Utility
+\RequirePackage[export]{adjustbox}
+\RequirePackage{enumitem}[shortlabels]
+\RequirePackage{listings}
+\RequirePackage[dvipsnames]{xcolor}
+\RequirePackage{longtable}
+\RequirePackage{tabularx}
+\RequirePackage{multirow, makecell}
+\RequirePackage{subcaption}
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage{csquotes}
+\RequirePackage{import}
+\RequirePackage{lipsum}
+\usepackage{graphicx}
+% Math
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{bigints}
+
+% Definición del lenguaje ARM para listings
+\lstdefinelanguage{ARM}{
+    morekeywords={
+        .data,.text,.global,.word,.skip,.byte,.space,
+        ldr,mov,cmp,beq,add,str,b,sub,ldrb,strb,mul,ble,bge,svc,
+        ldrh,strh,ldrb,strb,ands,eor,orr,lsl,lsr,asr,ror,bl,cmp,teq
+    },
+    sensitive=true,
+    alsoletter={.},
+    morecomment=[l]{@},
+    morestring=[b]",
+    morestring=[b]{'},
+    showstringspaces=false
+}
+
+% Configuración para código ensamblador ARM con lstlisting
+\lstdefinestyle{armstyle}{
+    backgroundcolor=\color{gray!10},   
+    commentstyle=\color{green!50!black}\itshape,
+    keywordstyle=\color{blue}\bfseries,
+    numberstyle=\tiny\color{gray},
+    stringstyle=\color{purple},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4,
+    morekeywords={ldr, mov, cmp, beq, add, str, b, sub, ldrb, strb, mul, ble, bge, svc, .data, .text, .global, .word, .skip, .byte, .space, sub}
+}
+
+
+% Custom Commands
+\newcommand{\linejump}{\hfill \break}
+\newcommand{\comment}[1]{}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+% Base Configuration
+\sloppy
+\setlength{\parindent}{0cm}
+\decimalpoint
+\hypersetup{colorlinks=true, urlcolor=blue, citecolor=blue, linkcolor=black}
+\urlstyle{same}
