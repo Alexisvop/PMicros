@@ -3,7 +3,7 @@
 \subsection{Ejercicio 1}
 Usando el IDE Thonny; escribir el siguiente código y comentar cada instrucción:
 
-\begin{verbatim}
+\begin{lstlisting}
 import machine
 import utime
 LED = machine. Pin(0, machine.Pin.OUT)
@@ -12,11 +12,11 @@ while True:
     utime.sleep_ms(500)
     LED.value(0)
     utime.sleep_ms(500)
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{Pseudo Código}
 
-\begin{algorithm}[H]
+\begin{algorithm}[h]
 \SetAlgoLined
 \caption{Encendido y apagado periódico de un LED}
 
@@ -34,7 +34,7 @@ Esperar 500 ms\;
 
 \subsubsection{Desarrollo}
 
-\begin{verbatim}
+\begin{lstlisting}
 import machine
 import utime
 
@@ -46,9 +46,9 @@ while True:
     utime.sleep_ms(500) # 0.5 segundos de espera
     LED.value(0) # LED apagado
     utime.sleep_ms(500) # 0.5 segundos de espera
-\end{verbatim}
+\end{lstlisting}
 
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.7\linewidth]{img/1.jpeg}
     \caption{Tarjeta programada con el Ejercicio 1}
@@ -66,7 +66,7 @@ Realizar las modificaciones necesarias para que los tiempos sean más pequeños 
 
 \subsubsection{Pseudo código}
 
-\begin{algorithm}[H]
+\begin{algorithm}[h]
 \SetAlgoLined
 \caption{Encendido y apagado del LED con tiempos modificados}
 
@@ -83,7 +83,7 @@ Esperar 300 ms\;
 \end{algorithm}
 
 \subsubsection{Desarrollo}
-\begin{verbatim}
+\begin{lstlisting}
 import machine
 import utime
 
@@ -95,9 +95,9 @@ while True:
     utime.sleep_ms(1000) # 1 segundo de espera
     LED.value(0) # LED apagado
     utime.sleep_ms(300) # 0.3 segundos de espera
-\end{verbatim}
+\end{lstlisting}
 
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.7\linewidth]{img/2.jpeg}
     \caption{Tarjeta programada con el Ejercicio 2}
@@ -115,7 +115,7 @@ Realizar las modificaciones requeridas para que el efecto se muestre en otro GPI
 
 \subsubsection{Pseudo código}
 
-\begin{algorithm}[H]
+\begin{algorithm}[h]
 \SetAlgoLined
 \caption{Control de LED en otro GPIO}
 
@@ -132,7 +132,7 @@ Esperar 700 ms\;
 \end{algorithm}
 
 \subsubsection{Desarrollo}
-\begin{verbatim}
+\begin{lstlisting}
 import machine
 import utime
 
@@ -144,9 +144,9 @@ while True:
     utime.sleep_ms(1200) # 1.2 segundos de espera
     LED.value(0) # LED apagado
     utime.sleep_ms(700) # 0.7 segundos de espera
-\end{verbatim}
+\end{lstlisting}
 
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.7\linewidth]{img/3.jpeg}
     \caption{Tarjeta programada con el Ejercicio 3}
@@ -160,14 +160,14 @@ Una vez más, al programar la tarjeta podemos ver el LED verde prender y apagar 
 \subsection{Ejercicio 4}
 Realizar un programa que genere las siguientes salidas:
 
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{pics/Ejercicio4.png}
 \end{figure}
 
 \subsubsection{Pseudo código}
 
-\begin{algorithm}[H]
+\begin{algorithm}[h]
 \SetAlgoLined
 \caption{Encendido alternado de dos LEDs}
 
@@ -187,7 +187,7 @@ Esperar 85 ms\;
 
 \end{algorithm}
 \subsubsection{Desarrollo}
-\begin{verbatim}
+\begin{lstlisting}
 import machine
 import utime
 
@@ -202,10 +202,10 @@ while True:
     LEDg2.value(0) # LED rojo apagado
     LEDg3.value(1) # LED azul prendido
     utime.sleep_ms(85) # 0.085 segundos de espera
-\end{verbatim}
+\end{lstlisting}
 
 \newpage
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.7\linewidth]{img/4.jpeg}
     \caption{Tarjeta programada con el Ejercicio 4}
@@ -218,14 +218,14 @@ Al programar la tarjeta observamos como el LED rojo y azul cambian estados de pr
 \newpage
 \subsection{Ejercicio 5}
 Realizar un programa que prenda y apague las GPIO0 al GPIO7; el circuito corresponde en su totalidad al mostrado en la figura 3.3, usar los retardos a elección
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{pics/Ejercicio5.png}
 \end{figure}
 
 \subsubsection{Pseudo código}
 
-\begin{algorithm}[H]
+\begin{algorithm}[h]
 \SetAlgoLined
 \caption{Encendido y apagado simultáneo de GPIO0 a GPIO7}
 
@@ -252,7 +252,7 @@ Esperar 800 ms\;
 \end{algorithm}
 
 \subsubsection{Desarrollo}
-\begin{verbatim}
+\begin{lstlisting}
 import machine
 import utime
 
@@ -270,10 +270,10 @@ while True:
     for led in leds:
         led.value(0)
     utime.sleep_ms(800) # 0.8 segundos de espera
-\end{verbatim}
+\end{lstlisting}
 
 \newpage
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.7\linewidth]{img/5.jpeg}
     \caption{Tarjeta programada con el Ejercicio 5}
@@ -286,14 +286,14 @@ Al ejecutar el programa en la tarjeta podemos observar que los 8 LED's prenden s
 \newpage
 \subsection{Ejercicio 6}
 Repetir la acción anterior 10 veces; mantener apagado 2 segundos y repetir acción.
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.9\linewidth]{pics/Ejercicio6.png}
 \end{figure}
 
 \subsubsection{Pseudo código}
 
-\begin{algorithm}[H]
+\begin{algorithm}[h]
 \SetAlgoLined
 \caption{Encendido y apagado de LEDs repetido 10 veces}
 
@@ -327,7 +327,7 @@ Esperar 2000 ms\;
 \end{algorithm}
 
 \subsubsection{Desarrollo}
-\begin{verbatim}
+\begin{lstlisting}
 import machine
 import utime
 
@@ -354,9 +354,9 @@ while True:
     
     # Fin de las 10 repeticiones
     utime.sleep_ms(retardo_espera) # 2 segundos de espera
-\end{verbatim}
+\end{lstlisting}
 
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.7\linewidth]{img/6.jpeg}
     \caption{Tarjeta programada con el Ejercicio 6}
@@ -369,14 +369,14 @@ Al programar la tarjeta podemos observar 8 LED's prenderse y apagarse simultáne
 \newpage
 \subsection{Ejercicio 7}
 Usando los GPIO0 al GPIO7; realizar un programa que genere la siguiente secuencia; usar retardos de 100ms.
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{pics/Ejercicio7.png}
 \end{figure}
 
 \subsubsection{Pseudo código}
 
-\begin{algorithm}[H]
+\begin{algorithm}[h]
 \SetAlgoLined
 \caption{Encendido secuencial de LEDs}
 
@@ -396,7 +396,7 @@ Apagar LED\;
 \end{algorithm}
 
 \subsubsection{Desarrollo}
-\begin{verbatim}
+\begin{lstlisting}
 import machine
 import utime
 
@@ -411,10 +411,10 @@ while True:
         led.value(1) # LED prendido
         utime.sleep_ms(retardo) # 0.1 segundos de espera
         led.value(0) # LED apagado
-\end{verbatim}
+\end{lstlisting}
 
 \newpage
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.7\linewidth]{img/7.jpeg}
     \caption{Tarjeta programada con el Ejercicio 7}
@@ -428,14 +428,14 @@ Al programar la tarjeta con este código se observa que los 8 LED's se encienden
 \newpage
 \subsection{Ejercicio 8}
 Usando los GPIO0 al GPIO7; realizar un programa que genere la siguiente secuencia; usar retardos de 100ms.
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{pics/Ejercicio8.png}
 \end{figure}
 
 \subsubsection{Pseudo código}
 
-\begin{algorithm}[H]
+\begin{algorithm}[h]
 \SetAlgoLined
 \caption{Encendido progresivo de LEDs}
 
@@ -462,7 +462,7 @@ Apagar todos los LEDs\;
 \end{algorithm}
 
 \subsubsection{Desarrollo}
-\begin{verbatim}
+\begin{lstlisting}
 import machine
 import utime
 
@@ -479,10 +479,10 @@ while True:
 
     for led in leds:
         led.value(0)
-\end{verbatim}
+\end{lstlisting}
 
 \newpage
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.7\linewidth]{img/8.jpeg}
     \caption{Tarjeta programada con el Ejercicio 8}
@@ -496,14 +496,14 @@ Al ejecutar el programa en la tarjeta se observa que los LED's se encienden de f
 \newpage
 \subsection{Ejercicio 9}
 Usando los GPIO0 al GPIO7; realizar un programa que genere un contador de 8 bits de forma ascendente; usar retardos de 50ms.
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{pics/Ejercicio9.png}
 \end{figure}
 
 \subsubsection{Pseudo código}
 
-\begin{algorithm}[H]
+\begin{algorithm}[h]
 \SetAlgoLined
 \caption{Contador binario de 8 bits}
 
@@ -529,7 +529,7 @@ Esperar 50 ms\;
 \end{algorithm}
 
 \subsubsection{Desarrollo}
-\begin{verbatim}
+\begin{lstlisting}
 import machine
 import utime
 
@@ -544,10 +544,10 @@ while True:
             estado_bit = (numero >> bit) & 1
             leds[7-bit].value(estado_bit)
         utime.sleep_ms(retardo)
-\end{verbatim}
+\end{lstlisting}
 
 \newpage
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.7\linewidth]{img/9.jpeg}
     \caption{Tarjeta programada con el Ejercicio 9}
@@ -561,14 +561,14 @@ Al cargar el programa en la tarjeta se observa que los LED's representan visualm
 \newpage
 \subsection{Ejercicio 10}
 Usando las salidas correspondientes a los colores de los leds; realizar un programa que controle el funcionamiento de dos semáforos, de acuerdo a la siguiente tabla.
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{pics/Ejercicio10.png}
 \end{figure}
 
 \subsubsection{Pseudo código}
 
-\begin{algorithm}[H]
+\begin{algorithm}[h]
 \SetAlgoLined
 \caption{Control de dos semáforos}
 
@@ -611,8 +611,9 @@ Esperar 3 s\;
 \Indm
 \end{algorithm}
 
+\newpage
 \subsubsection{Desarrollo}
-\begin{verbatim}
+\begin{lstlisting}
 import machine
 import utime
 
@@ -662,10 +663,10 @@ while True:
     V2.value(0)
     A2.value(1)
     utime.sleep_ms(3000)
-\end{verbatim}
+\end{lstlisting}
 
 \newpage
-\begin{figure}[ht!]
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.7\linewidth]{img/10.jpeg}
     \caption{Tarjeta programada con el Ejercicio 10}
