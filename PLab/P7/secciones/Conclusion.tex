@@ -1,0 +1,12 @@
+\section{Conclusiones}
+
+El desarrollo de esta práctica se llevó a cabo gracias al tutorial de Raspberry Pi de la facultad \cite{FI_UNAM_Raspberry_2026} y a las clases del profesor Moisés \cite{Melendez_Reyes_2026}.
+
+\subsection{Hernandez Acosta Mauricio Gabriel}
+Trabajar con la comunicación serie asíncrona en esta práctica me permitió entender de forma muy clara cómo se transmiten datos entre dos puntos sin necesidad de compartir una línea de reloj común. Lo que más me llamó la atención fue la diferencia entre hacer una lectura que detiene todo el programa y utilizar mecanismos de sondeo no bloqueantes como \texttt{poll()} o \texttt{uart.any()}; ver que el microcontrolador puede seguir atendiendo otras tareas mientras espera la llegada de un carácter cambia por completo la manera de diseñar el código. Ajustar parámetros como los baudios, la paridad y los bits de parada me ayudó a valorar la precisión temporal requerida en los protocolos UART para evitar pérdidas de información.
+
+\subsection{Perez Olvera Alexis Abraham}
+Esta práctica fue muy dinámica porque pasamos de enviar caracteres simples por la consola a construir un sistema completo de comandos para gobernar periféricos en tiempo real. Me pareció sumamente interesante cómo un simple byte recibido por el puerto serie puede desencadenar lecturas analógicas del potenciómetro, calcular temperaturas o emitir frecuencias específicas en el zumbador mediante PWM. Además, vincular el módulo Bluetooth a las terminales UART de la Raspberry Pi Pico y manipular las funciones desde una aplicación móvil demostró lo directo y versátil que resulta migrar de una conexión alámbrica a un control remoto inalámbrico sin tener que reescribir la lógica del programa.
+
+\subsection{Sierra Garcia Mariana}
+Lo que más disfruté de la práctica fue ver la aplicación física del control serie en los motores de corriente directa. Al principio parecía complejo coordinar las señales del puente H junto con la recepción de datos inalámbricos, pero al estructurar las funciones de giro y velocidad con PWM todo fluyó de forma natural. Comprobar que podíamos detener, arrancar y cambiar el sentido de giro de los motores enviando comandos desde el celular por Bluetooth me dio una perspectiva muy real de cómo se controlan los vehículos y robots en la industria. En definitiva, la sesión me dejó aprendizajes muy valiosos sobre comunicación asíncrona que complementan lo visto en prácticas anteriores.
